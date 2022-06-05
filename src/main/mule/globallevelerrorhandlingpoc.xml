@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="67deccc8-08ad-49d6-a7d4-ed15861cb7d0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="be20b47a-ed3f-4052-a5f6-2408853e2416" defaultErrorHandler-ref="globallevelerrorhandlingpocError_Handler" />
+	<error-handler name="globallevelerrorhandlingpocError_Handler" doc:id="ae2804a7-44c5-4e79-ac6f-dd1864457e46" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9175516f-acc5-4cd1-98a5-21f0aca6acfb" >
+			<logger level="INFO" doc:name="Logger" doc:id="20dc5ee5-5fe8-4fbc-8589-54954fd69cb9" />
+			<set-payload value="global error handling poc" doc:name="Set Payload" doc:id="0f8c6ce8-b95b-4203-aaa5-da9e91f6effa" />
+			<logger level="INFO" doc:name="Logger" doc:id="9a03af35-f969-4f15-8920-1fcde3457895" />
+		</on-error-continue>
+	</error-handler>
+	<flow name="globallevelerrorhandlingpocFlow" doc:id="2c041d6d-1841-42fe-ae53-d021ab36b421" >
+		<http:listener doc:name="Listener" doc:id="d92d298b-a59d-4087-926b-75e2a31c6467" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c8f7330b-c228-43ad-9531-9d7fe28f755e" />
+		<validation:is-null doc:id="60c30857-80f7-43a4-92e0-63cbb22b7c33" value="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="59f2929b-633c-438c-9054-be42d3f0eb82" />
+	</flow>
+</mule>
